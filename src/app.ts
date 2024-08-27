@@ -8,7 +8,7 @@ import userRoute from "../Router/userRouter"
 dotenv.config();
 
 const app = express();
-const port =  process.env.PORT || 3001;
+const port =  3003;
 connectDB();
 app.use(cors());
 app.use(express.json());
