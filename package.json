@@ -2,21 +2,25 @@
   "name": "ndoe-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/app.js",  
+  "main": "dist/src/app.js",
   "scripts": {
-    "start": "node dist/app.js",  
+    "start": "node dist/app.js",
     "build": "tsc",
     "watch": "tsc --watch",
-    "dev": "concurrently \"tsc --watch\" \"nodemon src/app.ts\"" 
+    "dev": "concurrently \"tsc --watch\" \"nodemon src/app.ts\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.5.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.4"
   },
   "devDependencies": {

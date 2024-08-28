@@ -13,7 +13,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 app.get('/', (req, res) => {
-  res.send('Flutter App backend');
+  res.send('Aegis Backend API');
 });
 
 app.use("/api/user", userRoute);

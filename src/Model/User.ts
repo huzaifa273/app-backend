@@ -5,8 +5,7 @@ export enum UserRole {
   POLICE = 'police',
   AMBULANCE = 'ambulance',
   FIRE = 'fire',
-  PRIVATE_AMBULANCE_SERVICE = 'private ambulance service',
-  SECURITY_PERSONNEL = 'security personnel',
+  SECURITY_PERSONNEL = 'security_personnel',
 }
 
 export interface IUser extends Document {

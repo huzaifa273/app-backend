@@ -1,5 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import User, { IUser, UserRole } from "../Model/User"
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken';
 const router = Router();
 
 //////////////////////////////////////////////////////////////////////////////
@@ -23,12 +25,14 @@ router.post('/create', async (req: Request, res: Response, next: NextFunction) =
     if (existingUser) {
       return res.status(400).json({ message: 'A user with this email or username already exists' });
     }
-
+    const saltRound = 10;
+    const secPassword = await bcrypt.hash(password, saltRound)
+    console.log(secPassword);
+    
     // Create and save the new user
-    const newUser: IUser = new User({ username, email, password, phoneNumber, role });
+    const newUser: IUser = new User({ username, email, password:secPassword, phoneNumber, role });
     await newUser.save();
-
-    res.status(201).json(newUser);
+    res.status(201).json({message: `Account Created`});
   } catch (error:any) {
     console.error('Error creating user:', error);
 
@@ -46,7 +50,55 @@ router.post('/create', async (req: Request, res: Response, next: NextFunction) =
 });
 
 
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////// Get all users ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////// Login users /////////////////////////////////
+router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { identifier, password } = req.body;
+
+    // Check if both identifier and password are provided
+    if (!identifier || !password) {
+      return res.status(400).json({ message: 'Both identifier (email or username) and password are required' });
+    }
+
+    // Find the user by email or username
+    const user = await User.findOne({ $or: [{ email: identifier }, { username: identifier }] });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid email/username or password' });
+    }
+
+    // Compare the provided password with the stored hash
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid email/username or password' });
+    }
+
+    // Generate JWT token (if you're using JWT for sessions)
+    const token = jwt.sign(
+      { id: user._id, role: user.role }, // Payload
+      process.env.JWT_SECRET!, // Secret key
+      { expiresIn: '1h' } // Token expiration
+    );
+
+    // Send success response with the token
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error: any) {
+    console.error('Error logging in user:', error);
+
+    // Handle unexpected errors
+    res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
+    next(error);
+  }
+});
+
 
 export default router;
