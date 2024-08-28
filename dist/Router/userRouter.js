@@ -43,14 +43,12 @@ router.post('/create', (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (!Object.values(User_1.UserRole).includes(role)) {
             return res.status(400).json({ message: 'Invalid role' });
         }
-        console.log({
-            username, email, password, phoneNumber, role
-        });
         const newUser = new User_1.default({ username, email, password, phoneNumber, role });
         yield newUser.save();
         res.status(201).json(newUser);
     }
     catch (error) {
+        console.error('Error creating user:', error); // Add this line
         next(error);
     }
 }));

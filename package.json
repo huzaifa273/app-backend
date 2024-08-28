@@ -2,12 +2,12 @@
   "name": "ndoe-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.ts",
+  "main": "dist/src/app.js",  
   "scripts": {
-    "start": "node dist/src/app.js",
+    "start": "node dist/app.js",  
     "build": "tsc",
     "watch": "tsc --watch",
-    "dev": "concurrently \"tsc --watch\" \"nodemon src/app.ts\""
+    "dev": "concurrently \"tsc --watch\" \"nodemon src/app.ts\"" 
   },
   "keywords": [],
   "author": "",
