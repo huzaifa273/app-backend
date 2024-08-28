@@ -3,6 +3,8 @@ import User, { IUser, UserRole } from "../Model/User"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 const router = Router();
+import dotenv from 'dotenv';
+dotenv.config();
 
 //////////////////////////////////////////////////////////////////////////////
 /////////////////////////// Create a new user ////////////////////////////////
@@ -76,8 +78,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     // Generate JWT token (if you're using JWT for sessions)
     const token = jwt.sign(
       { id: user._id, role: user.role }, // Payload
-      process.env.JWT_SECRET!, // Secret key
-      { expiresIn: '1h' } // Token expiration
+      process.env.JWT_SECRET!
     );
 
     // Send success response with the token
