@@ -2,10 +2,10 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export enum UserRole {
   CIVILIAN = 'civilian',
+  ADMIN = 'admin',
   POLICE = 'police',
   AMBULANCE = 'ambulance',
-  FIRE = 'fire',
-  SECURITY_PERSONNEL = 'security_personnel',
+  FIRE_FIGHTER = 'fire_fighter',
 }
 
 export interface IUser extends Document {
@@ -13,6 +13,10 @@ export interface IUser extends Document {
   email: string;
   password: string;
   phoneNumber: string;
+  verified:boolean;
+  otp?:string;
+  resetPasswordToken?:string,
+  resetPasswordExpiry?:Date,
   role: UserRole;
 }
 
@@ -43,6 +47,19 @@ const userSchema: Schema<IUser> = new Schema({
     enum: Object.values(UserRole),
     required: true,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  otp:{
+    type: String
+  },
+  resetPasswordToken:{
+    type: String
+  },
+  resetPasswordExpiry:{
+    type:Date
+  }
 });
 
 const User = mongoose.model<IUser>('User', userSchema);
