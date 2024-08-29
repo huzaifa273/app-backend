@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/src/app.js",
   "scripts": {
-    "start": "nodemon dist/app.js",
+    "start": "node dist/app.js",
     "build": "tsc",
     "watch": "tsc --watch",
     "dev": "concurrently \"tsc --watch\" \"nodemon src/app.ts\""
